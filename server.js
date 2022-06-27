@@ -1,4 +1,5 @@
-const { serveFileContent, notFoundHandler } = require('./src/handler.js');
+const { serveFileContent,
+  dynamicHandler, notFoundHandler } = require('./src/handler.js');
 const { startServer } = require('./src/serverLib.js');
 
 const handle = (handlers, path = './public') => {
@@ -11,6 +12,6 @@ const httpServer = (port, handle) => {
   startServer(handle, port);
 };
 
-const handlers = [serveFileContent, notFoundHandler];
+const handlers = [dynamicHandler, serveFileContent, notFoundHandler];
 
 httpServer(8800, handle(handlers));

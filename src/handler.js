@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { generateGuestBook } = require('./generateGuestBook');
 
 const notFoundHandler = (request, response) => {
   response.statusCode = 404;
@@ -25,4 +26,27 @@ const serveFileContent = (request, response, path) => {
   return true;
 };
 
-module.exports = { serveFileContent, notFoundHandler };
+const commentHandler = (request, response) => {
+  const guestBook = generateGuestBook(request);
+  response.addHeader('content-type', 'text/html');
+  response.send(guestBook);
+  return true;
+};
+
+const addCommentHandler = (request, response, path) => {
+  const { uri } = request;
+  if (uri) {
+    return commentHandler(request, response, path);
+  }
+  return false;
+};
+
+const dynamicHandler = (request, response, path) => {
+  const { uri } = request;
+  if (uri === '/guestbook.html') {
+    return addCommentHandler(request, response, path);
+  }
+  return false;
+};
+
+module.exports = { dynamicHandler, serveFileContent, notFoundHandler };
