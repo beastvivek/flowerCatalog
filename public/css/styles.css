@@ -1,0 +1,32 @@
+body {
+  font-size: 20px;
+  font-family: serif;
+  margin: 0px auto;
+  width: 1300px;
+}
+
+.main-heading {
+  font-weight: 900;
+  color: orange;
+  border-top: 1px solid grey;
+  border-bottom: 2px solid black;
+  margin: .5em;
+  padding: 1em 4em;
+  text-align: right;
+}
+
+.content-area {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.text-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.guest-book {
+  display: flex;
+  align-items: flex-end;
+}
