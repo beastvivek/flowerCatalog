@@ -5,6 +5,10 @@ body {
   width: 1300px;
 }
 
+.bold {
+  font-weight: 900;
+}
+
 .main-heading {
   font-weight: 900;
   color: orange;
@@ -13,6 +17,16 @@ body {
   margin: .5em;
   padding: 1em 4em;
   text-align: right;
+}
+
+.flower-heading {
+  display: flex;
+  justify-content: center;
+  font-weight: 900;
+  color: orange;
+  border-bottom: 2px solid black;
+  margin: .5em;
+  text-align: center;
 }
 
 .content-area {
