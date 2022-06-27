@@ -14,18 +14,18 @@ body {
   color: orange;
   border-top: 1px solid grey;
   border-bottom: 2px solid black;
-  margin: .5em;
+  margin: 0.5em;
   padding: 1em 4em;
   text-align: right;
 }
 
-.flower-heading {
+.centered-heading {
   display: flex;
   justify-content: center;
   font-weight: 900;
   color: orange;
   border-bottom: 2px solid black;
-  margin: .5em;
+  margin: 0.5em;
   text-align: center;
 }
 
