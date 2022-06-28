@@ -40,11 +40,25 @@ const pushNewComment = (name, comment, comments) => {
   return comments;
 };
 
+const parseComment = (comment) => {
+  let parsedComment = '';
+  let startingIndex = 0;
+  for (let index = 0; index < comment.length; index++) {
+    if (comment[index] === '+') {
+      parsedComment = parsedComment + comment.slice(startingIndex, index) + ' ';
+      startingIndex = index + 1;
+    }
+  }
+  parsedComment = parsedComment + comment.slice(startingIndex);
+  return parsedComment;
+};
+
 const generateGuestBook = (request) => {
   const { queryParams: { name, comment } } = request;
   let comments = JSON.parse(fs.readFileSync('./data/comments.json', 'utf8'));
   if (name && comment) {
-    comments = pushNewComment(name, comment, comments);
+    const parsedComment = parseComment(comment);
+    comments = pushNewComment(name, parsedComment, comments);
   }
   const content = getContent(comments);
   return content;
