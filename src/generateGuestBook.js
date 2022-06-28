@@ -4,7 +4,7 @@ const getTimeStamp = () => {
   const date = new Date();
   const day = date.toLocaleDateString();
   const time = date.toLocaleTimeString();
-  const timeStamp = day + time;
+  const timeStamp = `${day} ${time}`;
   return timeStamp;
 };
 
@@ -18,12 +18,18 @@ const getContent = (prevComments) => {
   return content;
 };
 
-const generateGuestBook = (request) => {
-  const { queryParams: { name, comment } } = request;
+const pushNewComment = (name, comment, comments) => {
   const timeStamp = getTimeStamp();
-  const comments = JSON.parse(fs.readFileSync('./data/comments.json', 'utf8'));
   const post = { timeStamp, name, comment };
   comments.push(post);
+};
+
+const generateGuestBook = (request) => {
+  const { queryParams: { name, comment } } = request;
+  const comments = JSON.parse(fs.readFileSync('./data/comments.json', 'utf8'));
+  if (name && comment) {
+    pushNewComment(name, comment, comments);
+  }
   fs.writeFileSync('./data/comments.json', JSON.stringify(comments), 'utf8');
   const content = getContent(comments);
   return content;

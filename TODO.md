@@ -1,10 +1,12 @@
 ## TODO
 
-- [ ] Make start book html
-- [ ] Take a comment from the user
+- [ ] Show comments in tabular form
+- [ ] Make parse for comments
 
 ## DONE
 
+- [x] Make start book html
+- [x] Take a comment from the user
 - [x] Created other pages
 - [x] Write the css for the html page
 - [x] Make a server
