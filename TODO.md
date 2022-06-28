@@ -1,10 +1,10 @@
 ## TODO
 
-- [ ] Show comments in tabular form
 - [ ] Make parse for comments
 
 ## DONE
 
+- [x] Show comments in tabular form
 - [x] Make start book html
 - [x] Take a comment from the user
 - [x] Created other pages
