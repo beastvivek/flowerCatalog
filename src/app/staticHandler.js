@@ -22,7 +22,7 @@ const notFoundHandler = (request, response) => {
   return true;
 };
 
-const serveFileContent = (request, response, path) => {
+const serveFileContent = path => (request, response) => {
   let { url: { pathname } } = request;
   if (pathname === '/') {
     pathname = '/index.html';

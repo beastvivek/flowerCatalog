@@ -1,7 +1,7 @@
 const { generateGuestBook } = require('./generateGuestBook.js');
 
 const commentHandler = (request, response) => {
-  const guestBook = generateGuestBook(request);
+  const guestBook = generateGuestBook(request.url.params);
   response.setHeader('content-type', 'text/html');
   response.end(guestBook);
   return true;

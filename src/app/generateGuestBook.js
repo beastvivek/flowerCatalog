@@ -37,9 +37,9 @@ const pushNewComment = (name, comment, comments) => {
   return comments;
 };
 
-const toGuestBookParams = (request) => {
+const toGuestBookParams = (params) => {
   const post = {};
-  const entries = request.url.searchParams.entries();
+  const entries = params.entries();
 
   for (const entry of entries) {
     post[entry[0]] = entry[1];
@@ -48,8 +48,8 @@ const toGuestBookParams = (request) => {
   return post;
 };
 
-const generateGuestBook = (request) => {
-  const { name, comment } = toGuestBookParams(request);
+const generateGuestBook = (params) => {
+  const { name, comment } = toGuestBookParams(params);
   const comments = JSON.parse(fs.readFileSync('./data/comments.json', 'utf8'));
   if (name && comment) {
     pushNewComment(name, comment, comments);

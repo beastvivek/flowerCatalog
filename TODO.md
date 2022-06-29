@@ -1,9 +1,11 @@
 ## TODO
 
 - [ ] Make handlers work for particular methods
+- [ ] Remove hardcoded paths
 
 ## DONE
 
+- [x] Send only params to generateGuestBook
 - [x] Move creation of handle to app.js
 - [x] Store comments in reverse order
 - [x] Decide content type based on extension
