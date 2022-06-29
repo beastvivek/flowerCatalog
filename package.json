@@ -1,0 +1,20 @@
+{
+  "name": "flowercatalog",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beastvivek/flowerCatalog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/beastvivek/flowerCatalog/issues"
+  },
+  "homepage": "https://github.com/beastvivek/flowerCatalog#readme",
+  "description": ""
+}

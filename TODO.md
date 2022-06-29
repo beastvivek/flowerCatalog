@@ -4,6 +4,8 @@
 
 ## DONE
 
+- [x] Move creation of handle to app.js
+- [x] Store comments in reverse order
 - [x] Decide content type based on extension
 - [x] Move guestBook.html template to resources
 - [x] Extract generateGuestBook.js file

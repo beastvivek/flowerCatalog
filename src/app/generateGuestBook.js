@@ -32,7 +32,7 @@ const getContent = (prevComments) => {
 const pushNewComment = (name, comment, comments) => {
   const timeStamp = getTimeStamp();
   const post = { timeStamp, name, comment };
-  comments.push(post);
+  comments.unshift(post);
   fs.writeFileSync('./data/comments.json', JSON.stringify(comments), 'utf8');
   return comments;
 };

@@ -11,4 +11,8 @@ const startServer = (port, handle) => {
   server.listen(port, () => console.log(`Listening to the port ${port}`));
 };
 
-module.exports = { startServer };
+const httpServer = (handle, port) => {
+  startServer(handle, port);
+};
+
+module.exports = { httpServer };
