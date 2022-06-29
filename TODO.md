@@ -1,5 +1,6 @@
 ## TODO
 
+- [ ] Redirect the page when comment is added 
 - [ ] Make handlers work for particular methods
 - [ ] Remove hardcoded paths
 
