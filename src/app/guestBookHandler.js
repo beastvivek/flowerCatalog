@@ -1,7 +1,7 @@
 const { generateGuestBook } = require('./generateGuestBook.js');
 
 const commentHandler = (request, response) => {
-  const guestBook = generateGuestBook(request.url.params);
+  const guestBook = generateGuestBook(request.url.searchParams);
   response.setHeader('content-type', 'text/html');
   response.end(guestBook);
   return true;
@@ -15,7 +15,7 @@ const addCommentHandler = (request, response) => {
   return false;
 };
 
-const dynamicHandler = (request, response) => {
+const guestBookHandler = (request, response) => {
   const { url: { pathname } } = request;
   if (pathname === '/guestbook.html') {
     return addCommentHandler(request, response);
@@ -23,4 +23,4 @@ const dynamicHandler = (request, response) => {
   return false;
 };
 
-module.exports = { dynamicHandler };
+module.exports = { guestBookHandler };

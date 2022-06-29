@@ -1,13 +1,9 @@
 const { notFoundHandler,
   serveFileContent } = require('./app/staticHandler.js');
-const { dynamicHandler } = require('./app/guestBookHandler.js');
-
-// const readData = () => {
-
-// };
+const { guestBookHandler } = require('./app/guestBookHandler.js');
 
 const handlers = [
-  dynamicHandler, serveFileContent('./public'), notFoundHandler
+  guestBookHandler, serveFileContent('./public'), notFoundHandler
 ];
 
 const createHandle = (handlers) => {
