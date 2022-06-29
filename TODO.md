@@ -1,11 +1,11 @@
 ## TODO
 
 - [ ] Remove hardcoded paths
-- [ ] Extract small handlers to work independently
 - [ ] Make handlers work for particular methods
 
 ## DONE
 
+- [x] Extract small handlers to work independently
 - [x] Redirect the page when comment is added 
 - [x] Send only params to generateGuestBook
 - [x] Move creation of handle to app.js

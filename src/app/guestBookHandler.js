@@ -19,16 +19,8 @@ const toGuestBookParams = (params) => {
   return post;
 };
 
-const getTimeStamp = () => {
-  const date = new Date();
-  const day = date.toLocaleDateString();
-  const time = date.toLocaleTimeString();
-  const timeStamp = `${day} ${time}`;
-  return timeStamp;
-};
-
 const pushNewComment = (request, name, comment) => {
-  const timeStamp = getTimeStamp();
+  const timeStamp = request.timeStamp;
   const post = { timeStamp, name, comment };
   request.guestBook.unshift(post);
   fs.writeFileSync(

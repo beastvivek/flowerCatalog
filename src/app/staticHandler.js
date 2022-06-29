@@ -40,4 +40,19 @@ const serveFileContent = path => (request, response) => {
   return true;
 };
 
-module.exports = { serveFileContent, notFoundHandler };
+const logHandler = (request, response) => {
+  console.log(`${request.method} ${request.url.pathname} ${request.timeStamp}`);
+};
+
+const timeStampHandler = (request, response) => {
+  const date = new Date();
+  const day = date.toLocaleDateString();
+  const time = date.toLocaleTimeString();
+  request.timeStamp = `${day} ${time}`;
+  return false;
+};
+
+module.exports = {
+  serveFileContent, notFoundHandler,
+  logHandler, timeStampHandler
+};
