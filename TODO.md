@@ -1,9 +1,10 @@
 ## TODO
 
-- [ ] Decide content type based on extension
+- [ ] Make handlers work for particular methods
 
 ## DONE
 
+- [x] Decide content type based on extension
 - [x] Move guestBook.html template to resources
 - [x] Extract generateGuestBook.js file
 - [x] ~~Make parse for comments~~

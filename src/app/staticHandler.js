@@ -1,5 +1,20 @@
 const fs = require('fs');
 
+const contentType = {
+  txt: 'text/plain',
+  html: 'text/html',
+  css: 'text/css',
+  jpg: 'image/jpg',
+  gif: 'animation/gif'
+};
+
+const getExtension = (fileName) => {
+  const index = fileName.indexOf('.');
+  return fileName.slice(index + 1);
+};
+
+const getMimeType = (fileName) => contentType[getExtension(fileName)];
+
 const notFoundHandler = (request, response) => {
   response.statusCode = 404;
   response.status = 'Not Found';
@@ -20,7 +35,7 @@ const serveFileContent = (request, response, path) => {
   }
 
   const content = fs.readFileSync(fileName);
-  response.setHeader('content-type', 'text/html');
+  response.setHeader('content-type', getMimeType(pathname));
   response.end(content);
   return true;
 };
