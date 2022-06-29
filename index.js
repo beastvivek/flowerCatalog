@@ -1,6 +1,7 @@
+const { dynamicHandler } = require('./src/app/guestBookHandler.js');
 const { serveFileContent,
-  dynamicHandler, notFoundHandler } = require('./src/handler.js');
-const { startServer } = require('./src/serverLib.js');
+  notFoundHandler } = require('./src/app/staticHandler.js');
+const { startServer } = require('./src/server/server.js');
 
 const handle = (handlers, path = './public') => {
   return (request, response) => {
@@ -8,7 +9,7 @@ const handle = (handlers, path = './public') => {
   };
 };
 
-const httpServer = (port, handle) => {
+const httpServer = (handle, port) => {
   startServer(handle, port);
 };
 
