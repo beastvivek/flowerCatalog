@@ -30,10 +30,10 @@ const getTimeStamp = () => {
 const pushNewComment = (request, name, comment) => {
   const timeStamp = getTimeStamp();
   const post = { timeStamp, name, comment };
-  request.comments.unshift(post);
+  request.guestBook.unshift(post);
   fs.writeFileSync(
     './data/comments.json',
-    JSON.stringify(request.comments), 'utf8');
+    JSON.stringify(request.guestBook), 'utf8');
   return true;
 };
 
@@ -48,22 +48,21 @@ const addCommentHandler = (request, response) => {
 };
 
 const showGuestBook = (request, response) => {
-  const content = generateGuestBook(request.comments);
+  const content = generateGuestBook(request.guestBook);
   response.setHeader('content-type', 'text/html');
   response.end(content);
   return true;
 };
 
-const guestBookHandler = (request, response) => {
+const guestBookHandler = (guestBook) => (request, response) => {
   const { url: { pathname } } = request;
-  const comments = JSON.parse(fs.readFileSync('./data/comments.json', 'utf8'));
 
   if (pathname === '/add-comment') {
-    request.comments = comments;
+    request.guestBook = guestBook;
     return addCommentHandler(request, response);
   }
   if (pathname === '/guestbook.html') {
-    request.comments = comments;
+    request.guestBook = guestBook;
     return showGuestBook(request, response);
   }
   return false;

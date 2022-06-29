@@ -1,9 +1,11 @@
+const fs = require('fs');
 const { notFoundHandler,
   serveFileContent } = require('./app/staticHandler.js');
 const { guestBookHandler } = require('./app/guestBookHandler.js');
 
+const guestBook = JSON.parse(fs.readFileSync('./data/comments.json', 'utf8'));
 const handlers = [
-  guestBookHandler, serveFileContent('./public'), notFoundHandler
+  guestBookHandler(guestBook), serveFileContent('./public'), notFoundHandler
 ];
 
 const createHandle = (handlers) => {
