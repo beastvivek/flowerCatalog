@@ -23,8 +23,9 @@ const notFoundHandler = (request, response) => {
 };
 
 const serveFileContent = path => (request, response) => {
+  const { method } = request;
   let { url: { pathname } } = request;
-  if (pathname === '/') {
+  if (pathname === '/' && method === 'GET') {
     pathname = '/index.html';
   }
 
