@@ -1,4 +1,4 @@
-const { handle } = require('./src/app.js');
-const { httpServer } = require('./src/server/server.js');
+const { router } = require('./src/app.js');
+const { httpServer } = require('httpserver');
 
-httpServer(8800, handle);
+httpServer(8800, router);

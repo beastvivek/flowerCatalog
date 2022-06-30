@@ -2,6 +2,7 @@ const fs = require('fs');
 const { notFoundHandler, logHandler, timeStampHandler,
   serveFileContent } = require('./app/staticHandler.js');
 const { guestBookRouter } = require('./app/guestBookHandler.js');
+const { createRouter } = require('httpserver');
 
 const guestBook = JSON.parse(fs.readFileSync('./data/comments.json', 'utf8'));
 const handlers = [
@@ -9,12 +10,6 @@ const handlers = [
   serveFileContent('./public'), notFoundHandler
 ];
 
-const createHandle = (handlers) => {
-  return (request, response) => {
-    return handlers.some((handler) => handler(request, response));
-  };
-};
+const router = createRouter(handlers);
 
-const handle = createHandle(handlers);
-
-module.exports = { handle };
+module.exports = { router };
