@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { generateGuestBook } = require('./generateGuestBook.js');
+const { GuestBook, generateGuestBook } = require('./guestBook.js');
 
 const commentHandler = (request, response) => {
   response.statusCode = 302;
@@ -19,21 +19,18 @@ const toGuestBookParams = (params) => {
   return post;
 };
 
-const pushNewComment = (request, name, comment) => {
-  const timeStamp = request.timeStamp;
-  const post = { timeStamp, name, comment };
-  request.guestBook.unshift(post);
-  fs.writeFileSync(
-    './data/comments.json',
-    JSON.stringify(request.guestBook), 'utf8');
-  return true;
+const writeToFile = (comments) => {
+  fs.writeFileSync('./data/comments.json', comments, 'utf8');
 };
 
 const addCommentHandler = (request, response) => {
   const { url: { pathname } } = request;
+  const guestBook = new GuestBook(request.guestBook);
   const { name, comment } = toGuestBookParams(request.url.searchParams);
   if (pathname && name && comment) {
-    pushNewComment(request, name, comment);
+    const timeStamp = request.timeStamp;
+    guestBook.addComment({ timeStamp, name, comment });
+    writeToFile(guestBook.toJson());
     return commentHandler(request, response);
   }
   return false;
