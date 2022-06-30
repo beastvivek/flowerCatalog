@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { request } = require('http');
 const { GuestBook, generateGuestBook } = require('./guestBook.js');
 
 const commentHandler = (request, response) => {
@@ -43,7 +44,13 @@ const showGuestBook = (request, response) => {
   return true;
 };
 
-const guestBookHandler = (guestBook) => (request, response) => {
+const commentsApiHandler = (request, response) => {
+  response.setHeader('content-type', 'text/plain');
+  response.end(JSON.stringify(request.guestBook));
+  return true;
+};
+
+const guestBookRouter = (guestBook) => (request, response) => {
   const { url: { pathname } } = request;
 
   if (pathname === '/add-comment') {
@@ -54,7 +61,11 @@ const guestBookHandler = (guestBook) => (request, response) => {
     request.guestBook = guestBook;
     return showGuestBook(request, response);
   }
+  if (pathname === '/api/guestbook') {
+    request.guestBook = guestBook;
+    return commentsApiHandler(request, response);
+  }
   return false;
 };
 
-module.exports = { guestBookHandler };
+module.exports = { guestBookRouter };

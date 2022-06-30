@@ -1,11 +1,11 @@
 const fs = require('fs');
 const { notFoundHandler, logHandler, timeStampHandler,
   serveFileContent } = require('./app/staticHandler.js');
-const { guestBookHandler } = require('./app/guestBookHandler.js');
+const { guestBookRouter } = require('./app/guestBookHandler.js');
 
 const guestBook = JSON.parse(fs.readFileSync('./data/comments.json', 'utf8'));
 const handlers = [
-  timeStampHandler, logHandler, guestBookHandler(guestBook),
+  timeStampHandler, logHandler, guestBookRouter(guestBook),
   serveFileContent('./public'), notFoundHandler
 ];
 

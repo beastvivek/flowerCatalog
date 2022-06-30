@@ -5,6 +5,7 @@
 
 ## DONE
 
+- [x] Add comments api
 - [x] Extracted guestBook entity
 - [x] Extract small handlers to work independently
 - [x] Redirect the page when comment is added 
