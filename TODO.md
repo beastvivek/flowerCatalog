@@ -1,11 +1,12 @@
 ## TODO
 
-- [ ] Read file asynchronously
+- [ ] Remove request and response from handlers
 - [ ] Remove hardcoded paths
 - [ ] Make handlers work for particular methods
 
 ## DONE
 
+- [x] Read file asynchronously
 - [x] Make `POST` method for `add-comment`
 - [x] Implement handlers with new router
 - [x] Handle methods
