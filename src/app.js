@@ -4,10 +4,11 @@ const { notFoundHandler, logHandler, timeStampHandler,
 const { guestBookRouter } = require('./app/guestBookRouter.js');
 const { apiRouter } = require('./app/apiRouter.js');
 const { createRouter } = require('httpserver');
+const { parseBodyParams } = require('./app/parseBodyParmas.js');
 
 const guestBook = JSON.parse(fs.readFileSync('./data/comments.json', 'utf8'));
 const handlers = [
-  timeStampHandler, logHandler, apiRouter(guestBook),
+  timeStampHandler, logHandler, parseBodyParams, apiRouter(guestBook),
   guestBookRouter(guestBook), serveFileContent('./public'), notFoundHandler
 ];
 
