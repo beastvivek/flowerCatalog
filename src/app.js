@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { notFoundHandler, logHandler, timeStampHandler,
   serveFileContent } = require('./app/staticHandler.js');
-const { guestBookRouter } = require('./app/guestBookHandler.js');
+const { guestBookRouter } = require('./app/guestBookRouter.js');
 const { apiRouter } = require('./app/apiRouter.js');
 const { createRouter } = require('httpserver');
 

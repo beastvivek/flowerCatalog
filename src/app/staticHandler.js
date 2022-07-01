@@ -19,10 +19,9 @@ const notFoundHandler = (request, response) => {
   response.statusCode = 404;
   response.status = 'Not Found';
   response.end('Not Found');
-  return true;
 };
 
-const serveFileContent = path => (request, response) => {
+const serveFileContent = path => (request, response, next) => {
   const { method } = request;
   let { url: { pathname } } = request;
   if (pathname === '/' && method === 'GET') {
@@ -32,6 +31,7 @@ const serveFileContent = path => (request, response) => {
   const fileName = path + pathname;
 
   if (!fs.existsSync(fileName)) {
+    next();
     return false;
   }
 
@@ -41,16 +41,17 @@ const serveFileContent = path => (request, response) => {
   return true;
 };
 
-const logHandler = (request, response) => {
+const logHandler = (request, response, next) => {
   console.log(`${request.method} ${request.url.pathname} ${request.timeStamp}`);
+  next();
 };
 
-const timeStampHandler = (request, response) => {
+const timeStampHandler = (request, response, next) => {
   const date = new Date();
   const day = date.toLocaleDateString();
   const time = date.toLocaleTimeString();
   request.timeStamp = `${day} ${time}`;
-  return false;
+  next();
 };
 
 module.exports = {

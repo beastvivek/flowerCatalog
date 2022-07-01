@@ -23,7 +23,7 @@ const writeToFile = (comments) => {
   fs.writeFileSync('./data/comments.json', comments, 'utf8');
 };
 
-const addCommentHandler = (request, response) => {
+const addCommentHandler = (request, response, next) => {
   const { url: { pathname } } = request;
   const guestBook = new GuestBook(request.guestBook);
   const { name, comment } = toGuestBookParams(request.url.searchParams);
@@ -33,28 +33,27 @@ const addCommentHandler = (request, response) => {
     writeToFile(guestBook.toJson());
     return commentHandler(request, response);
   }
-  return false;
+  next();
 };
 
 const showGuestBook = (request, response) => {
   const content = generateGuestBook(request.guestBook);
   response.setHeader('content-type', 'text/html');
   response.end(content);
-  return true;
 };
 
-const guestBookRouter = (guestBook) => (request, response) => {
+const guestBookRouter = (guestBook) => (request, response, next) => {
   const { method, url: { pathname } } = request;
 
   if (pathname === '/add-comment' && method === 'GET') {
     request.guestBook = guestBook;
-    return addCommentHandler(request, response);
+    return addCommentHandler(request, response, next);
   }
   if (pathname === '/guestbook.html' && method === 'GET') {
     request.guestBook = guestBook;
     return showGuestBook(request, response);
   }
-  return false;
+  next();
 };
 
 module.exports = { guestBookRouter };
