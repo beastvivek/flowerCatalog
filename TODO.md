@@ -1,12 +1,12 @@
 ## TODO
 
-- [ ] Make `POST` method for `add-comment`
 - [ ] Read file asynchronously
 - [ ] Remove hardcoded paths
 - [ ] Make handlers work for particular methods
 
 ## DONE
 
+- [x] Make `POST` method for `add-comment`
 - [x] Implement handlers with new router
 - [x] Handle methods
 - [x] Delete server and install own server module
