@@ -5,7 +5,7 @@
 
 ## DONE
 
-- [x] Hide gif on click for one click
+- [x] Hide gif on click for one second
 - [x] Read file asynchronously
 - [x] Make `POST` method for `add-comment`
 - [x] Implement handlers with new router
