@@ -3,6 +3,21 @@
 <head>
   <title>Flower Catalog</title>
   <link rel="stylesheet" href="css/styles.css">
+  <script>
+    const animateGif = (gif) => {
+      gif.style.visibility = 'hidden';
+      setTimeout(() => {
+        gif.style.visibility = 'visible';
+      }, 1000);
+    }
+
+    const main = () => {
+      const gif = document.getElementById('gif');
+      gif.addEventListener('click', () => animateGif(gif));
+    }
+
+    window.onload = main;
+  </script>
 </head>
 
 <body>
@@ -23,7 +38,7 @@
       </ul>
       <div class="guest-book">
         <a href="guestbook.html">Guest Book</a>
-        <img src="images/animated-flower-image-0021.gif" alt="Watering Flower">
+        <img id="gif" class="show" src="images/animated-flower-image-0021.gif" alt="Watering Flower">
       </div>
     </div>
   </div>

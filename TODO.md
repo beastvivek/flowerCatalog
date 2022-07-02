@@ -1,11 +1,11 @@
 ## TODO
 
-- [ ] Remove request and response from handlers
 - [ ] Remove hardcoded paths
 - [ ] Make handlers work for particular methods
 
 ## DONE
 
+- [x] Hide gif on click for one click
 - [x] Read file asynchronously
 - [x] Make `POST` method for `add-comment`
 - [x] Implement handlers with new router
