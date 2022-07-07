@@ -16,8 +16,8 @@
     "url": "https://github.com/beastvivek/flowerCatalog/issues"
   },
   "homepage": "https://github.com/beastvivek/flowerCatalog#readme",
-  "description": "",
   "dependencies": {
     "httpserver": "github:beastvivek/httpServer"
-  }
+  },
+  "description": ""
 }

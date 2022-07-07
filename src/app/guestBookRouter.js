@@ -34,11 +34,18 @@ const showGuestBook = (request, response) => {
 const guestBookRouter = (guestBook) => (request, response, next) => {
   const { method, url: { pathname } } = request;
 
+  if (!request.session && (pathname === '/add-comment' || pathname === '/guestbook')) {
+    response.statusCode = 302;
+    response.setHeader('location', '/login');
+    response.end();
+    return;
+  }
+
   if (pathname === '/add-comment' && method === 'POST') {
     request.guestBook = guestBook;
     return addCommentHandler(request, response, next);
   }
-  if (pathname === '/guestbook.html' && method === 'GET') {
+  if (pathname === '/guestbook' && method === 'GET') {
     request.guestBook = guestBook;
     return showGuestBook(request, response);
   }
