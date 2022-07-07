@@ -30,20 +30,21 @@ class GuestBook {
     return table;
   }
 
-  toHtml(template) {
-    return template.replace('__COMMENTS__', this.#createTable());
+  toHtml(template, name) {
+    template = template.replace('__COMMENTS__', this.#createTable());
+    return template.replace('__NAME__', name.toUpperCase());
   }
 }
 
-const getContent = (comments) => {
+const getContent = (comments, name) => {
   const guestBook = new GuestBook(comments);
   const template = fs.readFileSync('./resource/guestbook.html', 'utf8');
-  const content = guestBook.toHtml(template);
+  const content = guestBook.toHtml(template, name);
   return content;
 };
 
-const generateGuestBook = (comments) => {
-  const content = getContent(comments);
+const generateGuestBook = (comments, name) => {
+  const content = getContent(comments, name);
   return content;
 };
 

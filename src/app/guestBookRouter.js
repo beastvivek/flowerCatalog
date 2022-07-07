@@ -14,10 +14,11 @@ const writeToFile = (comments) => {
 
 const addCommentHandler = (request, response, next) => {
   const { url: { pathname } } = request;
-  const { name, comment } = request.bodyParams;
-  if (pathname && name && comment) {
+  const { comment } = request.bodyParams;
+  if (pathname && comment) {
     const guestBook = new GuestBook(request.guestBook);
     const timeStamp = request.timeStamp;
+    const name = request.session.username;
     guestBook.addComment({ timeStamp, name, comment });
     writeToFile(guestBook.toJson());
     return commentHandler(request, response);
@@ -26,7 +27,7 @@ const addCommentHandler = (request, response, next) => {
 };
 
 const showGuestBook = (request, response) => {
-  const content = generateGuestBook(request.guestBook);
+  const content = generateGuestBook(request.guestBook, request.session.username);
   response.setHeader('content-type', 'text/html');
   response.end(content);
 };

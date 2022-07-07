@@ -12,6 +12,12 @@ const { parseSearchParams } = require('./app/parseSearchParams.js');
 const { loginHandler } = require('./app/loginHandler.js');
 const { logOutHandler } = require('./app/logOutHandler.js');
 
+const users = [
+  { username: 'vivek', password: 'ek' },
+  { username: 'gayatri', password: 'three' },
+  { username: 'roshan', password: 'tan tana tan' }
+];
+
 const guestBook = JSON.parse(fs.readFileSync('./data/comments.json', 'utf8'));
 const sessions = {};
 
@@ -22,7 +28,7 @@ const handlers = [
   injectCookies,
   injectSession(sessions),
   logHandler,
-  loginHandler(sessions),
+  loginHandler(sessions, users),
   apiRouter(guestBook),
   guestBookRouter(guestBook),
   serveFileContent('./public'),

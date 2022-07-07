@@ -36,25 +36,20 @@ const createSession = (username, password) => {
   return { sessionId: date.getTime(), username, password };
 };
 
-const isValidUser = (username, password) => {
-  const users = [
-    { username: 'vivek', password: 'ek' },
-    { username: 'gayatri', password: 'three' }
-  ];
-
+const isValidUser = (users, username, password) => {
   return users.find((user) => {
     return user.username === username && user.password === password;
   });
 };
 
-const loginHandler = (sessions) => (request, response, next) => {
+const loginHandler = (sessions, users) => (request, response, next) => {
   const { method, url: { pathname }, bodyParams: { username, password } } = request;
 
   if (pathname === '/login' && method === 'POST') {
     const session = createSession(username, password);
     sessions[session.sessionId] = session;
 
-    if (!isValidUser(username, password)) {
+    if (!isValidUser(users, username, password)) {
       response.statusCode = 401;
       response.end('Unauthorized User');
       return;
