@@ -3,7 +3,7 @@ const { GuestBook, generateGuestBook } = require('./guestBook.js');
 
 const commentHandler = (request, response) => {
   response.statusCode = 302;
-  response.setHeader('location', '/guestbook.html');
+  response.setHeader('location', '/guestbook');
   response.end();
   return true;
 };
