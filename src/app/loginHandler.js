@@ -26,11 +26,14 @@ const loginTemplate = () => `<html>
       <div class="login-button">
         <input type="submit" value="Login">
       </div>
-
-      <div class="unauthorized">__MESSAGE__</div>
-
     </form>
-</body>
+      
+    <a class="signup" href="/signup">
+      <div class="button">Sign Up</div>
+    </a>
+    
+    <div class="unauthorized">__MESSAGE__</div>
+  </body>
 
 </html>`;
 

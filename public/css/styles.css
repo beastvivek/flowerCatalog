@@ -65,11 +65,17 @@ body {
   text-decoration: none;
 }
 
+.signup {
+  text-decoration: none;
+}
+
 .button {
-  width: 100px;
+  color: black;
+  width: 70px;
   text-align: center;
   border: 1px solid black;
   padding: 0.2em;
+  font-size: 16px;
   background-color: lightgray;
 }
 

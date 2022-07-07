@@ -1,4 +1,4 @@
-const logOutHandler = (sessions) => (request, response, next) => {
+const logoutHandler = (sessions) => (request, response, next) => {
   const { method, url: { pathname } } = request;
 
   if (pathname === '/logout' && method === 'GET') {
@@ -13,4 +13,4 @@ const logOutHandler = (sessions) => (request, response, next) => {
   next();
 };
 
-module.exports = { logOutHandler };
+module.exports = { logoutHandler };
