@@ -58,6 +58,21 @@ body {
   padding: 0.3em 2em;
 }
 
+.logOut {
+  position: fixed;
+  top: 30px;
+  left: 1300px;
+  text-decoration: none;
+}
+
+.button {
+  width: 100px;
+  text-align: center;
+  border: 1px solid black;
+  padding: 0.2em;
+  background-color: lightgray;
+}
+
 .comments>tbody>tr:nth-child(even) {
   background-color: lightgray;
 }
