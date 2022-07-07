@@ -2,6 +2,7 @@ const loginTemplate = () => `<html>
 
 <head>
   <title>Login page</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
@@ -25,6 +26,8 @@ const loginTemplate = () => `<html>
       <div class="login-button">
         <input type="submit" value="Login">
       </div>
+
+      <div class="unauthorized">__MESSAGE__</div>
 
     </form>
 </body>
@@ -51,7 +54,8 @@ const loginHandler = (sessions, users) => (request, response, next) => {
 
     if (!isValidUser(users, username, password)) {
       response.statusCode = 401;
-      response.end('Unauthorized User');
+      const htmlPage = loginTemplate().replace('__MESSAGE__', 'Please enter valid username and password');
+      response.end(htmlPage);
       return;
     }
 
@@ -64,7 +68,8 @@ const loginHandler = (sessions, users) => (request, response, next) => {
 
   if (pathname === '/login' && method === 'GET') {
     response.setHeader('content-type', 'text/html');
-    response.end(loginTemplate());
+    const htmlPage = loginTemplate().replace('__MESSAGE__', '');
+    response.end(htmlPage);
     return;
   }
   next();

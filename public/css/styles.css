@@ -76,3 +76,8 @@ body {
 .comments>tbody>tr:nth-child(even) {
   background-color: lightgray;
 }
+
+.unauthorized {
+  color: red;
+  font-size: 25px;
+}
