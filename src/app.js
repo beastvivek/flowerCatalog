@@ -7,7 +7,7 @@ const { apiRouter } = require('./app/apiRouter.js');
 const { parseBodyParams } = require('./app/parseBodyParams.js');
 const { serveFileContent } = require('./app/serveFileContent.js');
 const { loginHandler, injectCookies, injectSession,
-  parseSearchParams } = require('./app/cookiesHandler.js');
+  parseSearchParams, logOutHandler } = require('./app/cookiesHandler.js');
 
 const guestBook = JSON.parse(fs.readFileSync('./data/comments.json', 'utf8'));
 const sessions = {};
@@ -23,6 +23,7 @@ const handlers = [
   apiRouter(guestBook),
   guestBookRouter(guestBook),
   serveFileContent('./public'),
+  logOutHandler(sessions),
   notFoundHandler
 ];
 
