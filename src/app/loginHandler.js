@@ -32,7 +32,7 @@ const loginTemplate = () => `<html>
       <div class="button">Sign Up</div>
     </a>
     
-    <div class="unauthorized">__MESSAGE__</div>
+    <div class="message __CLASS__">__MESSAGE__</div>
   </body>
 
 </html>`;
@@ -49,7 +49,7 @@ const isValidUser = (users, username, password) => {
 };
 
 const loginHandler = (sessions, users) => (request, response, next) => {
-  const { method, url: { pathname }, bodyParams: { username, password } } = request;
+  const { method, url: { pathname }, bodyParams: { username, password }, searchParams: { message } } = request;
 
   if (pathname === '/login' && method === 'POST') {
     const session = createSession(username, password);
@@ -57,7 +57,8 @@ const loginHandler = (sessions, users) => (request, response, next) => {
 
     if (!isValidUser(users, username, password)) {
       response.statusCode = 401;
-      const htmlPage = loginTemplate().replace('__MESSAGE__', 'Please enter valid username and password');
+      let template = loginTemplate().replace('__MESSAGE__', 'Please enter valid username and password');
+      const htmlPage = template.replace('__CLASS__', '');
       response.end(htmlPage);
       return;
     }
@@ -71,7 +72,12 @@ const loginHandler = (sessions, users) => (request, response, next) => {
 
   if (pathname === '/login' && method === 'GET') {
     response.setHeader('content-type', 'text/html');
-    const htmlPage = loginTemplate().replace('__MESSAGE__', '');
+    let loginMessage = '';
+    if (message) {
+      loginMessage = message;
+    }
+    const template = loginTemplate().replace('__MESSAGE__', loginMessage);
+    const htmlPage = template.replace('__CLASS__', 'green');
     response.end(htmlPage);
     return;
   }

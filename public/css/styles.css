@@ -5,6 +5,11 @@ body {
   width: 1300px;
 }
 
+.message {
+  font-size: 25px;
+  color: red;
+}
+
 .bold {
   font-weight: 900;
 }
@@ -83,7 +88,6 @@ body {
   background-color: lightgray;
 }
 
-.unauthorized {
-  color: red;
-  font-size: 25px;
+.green {
+  color: green;
 }

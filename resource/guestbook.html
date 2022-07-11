@@ -3,6 +3,53 @@
 <head>
   <title>Flower Catalog</title>
   <link rel="stylesheet" href="css/styles.css">
+  <script>
+    const generateRowData = (data) => {
+      const tdElement = document.createElement('td');
+      tdElement.innerText = data;
+      return tdElement;
+    };
+
+    const generatePostRow = ({ timeStamp, name, comment }, rowElement) => {
+      rowElement.append(generateRowData(timeStamp));
+      rowElement.append(generateRowData(name));
+      rowElement.append(generateRowData(comment));
+      return rowElement;
+    };
+
+    const appendRow = (event, xhr) => {
+      const tableBody = document.querySelector('.comments > tbody');
+      const post = JSON.parse(xhr.response);
+      const rowElement = document.createElement('tr');
+      const postRow = generatePostRow(post, rowElement);
+      tableBody.prepend(rowElement);
+    };
+
+    const parseFormData = (formData) => {
+      return new URLSearchParams(formData);
+    };
+
+    const addComment = () => {
+      const xhr = new XMLHttpRequest();
+      const formElement = document.querySelector('.comment-form');
+      const formData = new FormData(formElement);
+
+      const parsedData = parseFormData(formData);
+
+      xhr.onload = (event) => {
+        appendRow(event, xhr);
+      };
+      xhr.open('POST', '/guestbook');
+      xhr.send(parsedData);
+    };
+
+    const main = () => {
+      const addCommentElement = document.querySelector('.add-comment');
+      addCommentElement.onclick = addComment;
+    }
+
+    window.onload = main;
+  </script>
 </head>
 
 <body>
@@ -13,7 +60,7 @@
     </a>
   </header>
 
-  <form action="/add-comment" method="post">
+  <form class="comment-form">
     <div>
       <h1 class="comment-heading">Leave a comment</h1>
       <div class="comment-block">
@@ -24,7 +71,7 @@
           <label for="comment">Comment :</label>
           <textarea name="comment" cols="30" rows="5"></textarea>
         </div>
-        <input type="submit" value="Submit">
+        <button class="add-comment" type="button">Add Comment</button>
       </div>
     </div>
   </form>

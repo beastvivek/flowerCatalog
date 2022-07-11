@@ -19,9 +19,12 @@ const addCommentHandler = (request, response, next) => {
     const guestBook = new GuestBook(request.guestBook);
     const timeStamp = request.timeStamp;
     const name = request.session.username;
-    guestBook.addComment({ timeStamp, name, comment });
+    const post = { timeStamp, name, comment };
+    guestBook.addComment(post);
     writeToFile(guestBook.toJson());
-    return commentHandler(request, response);
+    response.end(JSON.stringify(post));
+    return;
+    // return commentHandler(request, response);
   }
   next();
 };
@@ -35,14 +38,14 @@ const showGuestBook = (request, response) => {
 const guestBookRouter = (guestBook) => (request, response, next) => {
   const { method, url: { pathname } } = request;
 
-  if (!request.session && (pathname === '/add-comment' || pathname === '/guestbook')) {
+  if (!request.session && pathname === '/guestbook') {
     response.statusCode = 302;
     response.setHeader('location', '/login');
     response.end();
     return;
   }
 
-  if (pathname === '/add-comment' && method === 'POST') {
+  if (pathname === '/guestbook' && method === 'POST') {
     request.guestBook = guestBook;
     return addCommentHandler(request, response, next);
   }
