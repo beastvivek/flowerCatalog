@@ -3,53 +3,7 @@
 <head>
   <title>Flower Catalog</title>
   <link rel="stylesheet" href="css/styles.css">
-  <script>
-    const generateRowData = (data) => {
-      const tdElement = document.createElement('td');
-      tdElement.innerText = data;
-      return tdElement;
-    };
-
-    const generatePostRow = ({ timeStamp, name, comment }, rowElement) => {
-      rowElement.append(generateRowData(timeStamp));
-      rowElement.append(generateRowData(name));
-      rowElement.append(generateRowData(comment));
-      return rowElement;
-    };
-
-    const appendRow = (event, xhr) => {
-      const tableBody = document.querySelector('.comments > tbody');
-      const post = JSON.parse(xhr.response);
-      const rowElement = document.createElement('tr');
-      const postRow = generatePostRow(post, rowElement);
-      tableBody.prepend(rowElement);
-    };
-
-    const parseFormData = (formData) => {
-      return new URLSearchParams(formData);
-    };
-
-    const addComment = () => {
-      const xhr = new XMLHttpRequest();
-      const formElement = document.querySelector('.comment-form');
-      const formData = new FormData(formElement);
-
-      const parsedData = parseFormData(formData);
-
-      xhr.onload = (event) => {
-        appendRow(event, xhr);
-      };
-      xhr.open('POST', '/guestbook');
-      xhr.send(parsedData);
-    };
-
-    const main = () => {
-      const addCommentElement = document.querySelector('.add-comment');
-      addCommentElement.onclick = addComment;
-    }
-
-    window.onload = main;
-  </script>
+  <script src="scripts/addComment.js"></script>
 </head>
 
 <body>

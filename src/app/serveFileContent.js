@@ -5,7 +5,8 @@ const contentType = {
   html: 'text/html',
   css: 'text/css',
   jpg: 'image/jpg',
-  gif: 'animation/gif'
+  gif: 'animation/gif',
+  js: 'application/js'
 };
 
 const getExtension = (fileName) => {
