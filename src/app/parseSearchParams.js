@@ -1,12 +1,17 @@
 const parseSearchParams = (request, response, next) => {
-  const searchParams = {};
-  const entries = request.url.searchParams.entries();
+  const { method, url: { searchParams } } = request;
+  if (searchParams && method === 'GET') {
+    const params = {};
+    const entries = searchParams.entries();
 
-  for (const entry of entries) {
-    searchParams[entry[0]] = entry[1];
+    for (const entry of entries) {
+      params[entry[0]] = entry[1];
+    }
+
+    request.searchParams = params;
+    next();
+    return;
   }
-
-  request.searchParams = searchParams;
   next();
 };
 

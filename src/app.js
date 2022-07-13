@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { createRouter } = require('httpserver');
-const { notFoundHandler, logHandler,
+const { notFoundHandler, logHandler, parseUrl,
   timeStampHandler } = require('./app/staticHandler.js');
 const { guestBookRouter } = require('./app/guestBookRouter.js');
 const { apiRouter } = require('./app/apiRouter.js');
@@ -23,6 +23,7 @@ const guestBook = JSON.parse(fs.readFileSync('./data/comments.json', 'utf8'));
 const sessions = {};
 
 const handlers = [
+  parseUrl,
   timeStampHandler,
   parseBodyParams,
   parseSearchParams,
@@ -38,6 +39,6 @@ const handlers = [
   notFoundHandler
 ];
 
-const router = createRouter(handlers);
+const app = createRouter(handlers);
 
-module.exports = { router };
+module.exports = { app };

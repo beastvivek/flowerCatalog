@@ -49,7 +49,7 @@ const isValidUser = (users, username, password) => {
 };
 
 const loginHandler = (sessions, users) => (request, response, next) => {
-  const { method, url: { pathname }, bodyParams: { username, password }, searchParams: { message } } = request;
+  const { method, url: { pathname }, bodyParams: { username, password } } = request;
 
   if (pathname === '/login' && method === 'POST') {
     const session = createSession(username, password);
@@ -71,6 +71,7 @@ const loginHandler = (sessions, users) => (request, response, next) => {
   }
 
   if (pathname === '/login' && method === 'GET') {
+    const { searchParams: { message } } = request;
     response.setHeader('content-type', 'text/html');
     let loginMessage = '';
     if (message) {

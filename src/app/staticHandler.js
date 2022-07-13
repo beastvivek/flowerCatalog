@@ -4,6 +4,13 @@ const notFoundHandler = (request, response) => {
   response.end('Not Found');
 };
 
+const parseUrl = (request, response, next) => {
+  const host = request.headers.host;
+  const url = request.url;
+  request.url = new URL(`http://${host}${url}`);
+  next();
+};
+
 const logHandler = (request, response, next) => {
   console.log(`${request.method} ${request.url.pathname} ${request.timeStamp}`);
   next();
@@ -17,4 +24,4 @@ const timeStampHandler = (request, response, next) => {
   next();
 };
 
-module.exports = { notFoundHandler, logHandler, timeStampHandler };
+module.exports = { notFoundHandler, logHandler, timeStampHandler, parseUrl };
