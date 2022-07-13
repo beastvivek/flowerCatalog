@@ -42,7 +42,7 @@ const signupHandler = (users) => (request, response, next) => {
   }
 
   if (method === 'POST' && pathname === '/signup') {
-    users.push({ username, password });
+    users[username] = { username, password };
     response.statusCode = 302;
     response.setHeader('location', '/login?message=SignUp+Successful');
     response.end();
