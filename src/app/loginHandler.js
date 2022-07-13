@@ -52,38 +52,52 @@ const isValidUser = (users, username, password) => {
   return false;
 };
 
+const validUser = (response) => {
+  response.statusCode = 401;
+  let template = loginTemplate().replace('__MESSAGE__', 'Please enter valid username and password');
+  const htmlPage = template.replace('__CLASS__', '');
+  response.end(htmlPage);
+};
+
+const getLoginHandler = (request, response) => {
+  const { searchParams: { message } } = request;
+  response.setHeader('content-type', 'text/html');
+  let loginMessage = '';
+  if (message) {
+    loginMessage = message;
+  }
+  const template = loginTemplate().replace('__MESSAGE__', loginMessage);
+  const htmlPage = template.replace('__CLASS__', 'green');
+  response.end(htmlPage);
+};
+
+const postLoginHandler = (request, response, sessions, users) => {
+  const { bodyParams: { username, password } } = request;
+
+  const session = createSession(username, password);
+  sessions[session.sessionId] = session;
+
+  if (!isValidUser(users, username, password)) {
+    validUser(response);
+    return;
+  }
+
+  response.setHeader('set-cookie', `id=${session.sessionId}`);
+  response.statusCode = 302;
+  response.setHeader('location', '/guestbook');
+  response.end();
+};
+
 const loginHandler = (sessions, users) => (request, response, next) => {
-  const { method, url: { pathname }, bodyParams: { username, password } } = request;
+  const { method, url: { pathname } } = request;
 
   if (pathname === '/login' && method === 'POST') {
-    const session = createSession(username, password);
-    sessions[session.sessionId] = session;
-
-    if (!isValidUser(users, username, password)) {
-      response.statusCode = 401;
-      let template = loginTemplate().replace('__MESSAGE__', 'Please enter valid username and password');
-      const htmlPage = template.replace('__CLASS__', '');
-      response.end(htmlPage);
-      return;
-    }
-
-    response.setHeader('set-cookie', `id=${session.sessionId}`);
-    response.statusCode = 302;
-    response.setHeader('location', '/guestbook');
-    response.end();
+    postLoginHandler(request, response, sessions, users);
     return;
   }
 
   if (pathname === '/login' && method === 'GET') {
-    const { searchParams: { message } } = request;
-    response.setHeader('content-type', 'text/html');
-    let loginMessage = '';
-    if (message) {
-      loginMessage = message;
-    }
-    const template = loginTemplate().replace('__MESSAGE__', loginMessage);
-    const htmlPage = template.replace('__CLASS__', 'green');
-    response.end(htmlPage);
+    getLoginHandler(request, response);
     return;
   }
   next();

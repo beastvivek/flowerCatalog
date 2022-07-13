@@ -13,7 +13,7 @@ describe('GET /', () => {
       .get('/')
       .expect('content-type', 'text/html')
       .expect('content-length', '1075')
-      .expect(/Flower Catalog/)
+      .expect(/<h3 class="main-heading">Flower Catalog<\/h3>/)
       .expect(200, done)
   });
 });
@@ -25,7 +25,7 @@ describe('GET /index.html', () => {
       .get('/index.html')
       .expect('content-type', 'text/html')
       .expect('content-length', '1075')
-      .expect(/Flower Catalog/)
+      .expect(/<h3 class="main-heading">Flower Catalog<\/h3>/)
       .expect(200, done)
   });
 });
@@ -37,7 +37,7 @@ describe('GET /abeliophyllum.html', () => {
       .get('/abeliophyllum.html')
       .expect('content-type', 'text/html')
       .expect('content-length', '1419')
-      .expect(/Abeliophyllum/)
+      .expect(/<h3> <a href="index.html">&lt;&lt;<\/a> Abeliophyllum<\/h3>/)
       .expect(200, done)
   });
 });
@@ -49,7 +49,7 @@ describe('GET /ageratum.html', () => {
       .get('/ageratum.html')
       .expect('content-type', 'text/html')
       .expect('content-length', '1149')
-      .expect(/Ageratum/)
+      .expect(/<h3> <a href="index.html">&lt;&lt;<\/a> Ageratum<\/h3>/)
       .expect(200, done)
   });
 });
@@ -79,6 +79,28 @@ describe('POST /guestbook', () => {
       .post('/guestbook')
       .set('Cookie', 'id=101')
       .send('comment=hello')
+      .expect(200, done)
+  });
+});
+
+describe('GET /login', () => {
+  it('Should give status 200 for GET /login', (done) => {
+    const sessions = {};
+    request(app(config, sessions))
+      .get('/login')
+      .expect('content-type', 'text/html')
+      .expect('content-length', '821')
+      .expect(/<input type="submit" value="Login">/)
+      .expect(200, done)
+  });
+
+  it('Should give status 200 for GET /login?message=SignUp+Successful', (done) => {
+    const sessions = {};
+    request(app(config, sessions))
+      .get('/login?message=SignUp+Successful')
+      .expect('content-type', 'text/html')
+      .expect('content-length', '838')
+      .expect(/<div class="message green">SignUp Successful<\/div>/)
       .expect(200, done)
   });
 });
