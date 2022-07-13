@@ -154,13 +154,48 @@ describe('GET /signup', () => {
 });
 
 describe('POST /signup', () => {
-  it('Should give status of 200 for POST /signup', (done) => {
+  it('Should give status of 302 for POST /signup', (done) => {
     const sessions = {};
     const users = {};
     request(app(config, sessions, users))
       .post('/signup')
       .send('username=vivek&password=vivek')
       .expect('location', '/login?message=SignUp+Successful')
+      .expect(302, done)
+  });
+});
+
+describe('GET /api/guestbook', () => {
+  const comment = { name: 'vivek', comment: 'hello' };
+
+  before(() => {
+    fs.writeFileSync(config.commentsFile, JSON.stringify([comment]), 'utf-8');
+  });
+
+  after(() => {
+    fs.writeFileSync(config.commentsFile, '[]', 'utf-8');
+  });
+
+  it('Should give status of 200 for GET /api/guestbook', (done) => {
+    const sessions = {};
+    const users = {};
+    request(app(config, sessions, users))
+      .get('/api/guestbook')
+      .expect('content-type', 'text/plain')
+      .expect('content-length', '36')
+      .expect('[{"name":"vivek","comment":"hello"}]')
+      .expect(200, done)
+  });
+});
+
+describe('GET /logout', () => {
+  it('Should give status of 302 for GET /logout', (done) => {
+    const sessions = { '101': { username: 'john', sessionId: '101' } };
+    const users = {};
+    request(app(config, sessions, users))
+      .get('/logout')
+      .set('Cookie', 'id=101')
+      .expect('location', '/')
       .expect(302, done)
   });
 });
