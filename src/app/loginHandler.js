@@ -43,9 +43,13 @@ const createSession = (username, password) => {
 };
 
 const isValidUser = (users, username, password) => {
-  return users.find((user) => {
-    return user.username === username && user.password === password;
-  });
+  for (const user in users) {
+    const currentUser = users[user];
+    if (currentUser.username === username && currentUser.password === password) {
+      return true;
+    }
+  }
+  return false;
 };
 
 const loginHandler = (sessions, users) => (request, response, next) => {

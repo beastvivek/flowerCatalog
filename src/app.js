@@ -13,32 +13,27 @@ const { loginHandler } = require('./app/loginHandler.js');
 const { logoutHandler } = require('./app/logoutHandler.js');
 const { signupHandler } = require('./app/signUpHandler.js');
 
-const users = [
-  { username: 'vivek', password: 'ek' },
-  { username: 'gayatri', password: 'three' },
-  { username: 'roshan', password: 'tan tana tan' }
-];
+const app = (config) => {
+  const guestBook = JSON.parse(fs.readFileSync(config.commentsFile, 'utf8'));
 
-const guestBook = JSON.parse(fs.readFileSync('./data/comments.json', 'utf8'));
-const sessions = {};
+  const handlers = [
+    parseUrl,
+    timeStampHandler,
+    parseBodyParams,
+    parseSearchParams,
+    injectCookies,
+    injectSession(config.sessions),
+    logHandler,
+    loginHandler(config.sessions, config.users),
+    signupHandler(config.users),
+    apiRouter(guestBook),
+    guestBookRouter(guestBook, config.commentsFile),
+    serveFileContent('./public'),
+    logoutHandler(config.sessions),
+    notFoundHandler
+  ];
 
-const handlers = [
-  parseUrl,
-  timeStampHandler,
-  parseBodyParams,
-  parseSearchParams,
-  injectCookies,
-  injectSession(sessions),
-  logHandler,
-  loginHandler(sessions, users),
-  signupHandler(users),
-  apiRouter(guestBook),
-  guestBookRouter(guestBook),
-  serveFileContent('./public'),
-  logoutHandler(sessions),
-  notFoundHandler
-];
-
-const app = createRouter(handlers);
+  return createRouter(handlers);
+};
 
 module.exports = { app };

@@ -1,11 +1,11 @@
 const fs = require('fs');
 const { GuestBook, generateGuestBook } = require('./guestBook.js');
 
-const writeToFile = (comments) => {
-  fs.writeFileSync('./data/comments.json', comments, 'utf8');
+const writeToFile = (comments, toFile) => {
+  fs.writeFileSync(toFile, comments, 'utf8');
 };
 
-const addCommentHandler = (request, response, next) => {
+const createAddCommentHandler = (toFile) => (request, response, next) => {
   const { url: { pathname } } = request;
   const { comment } = request.bodyParams;
   if (pathname && comment) {
@@ -15,7 +15,7 @@ const addCommentHandler = (request, response, next) => {
     const post = { timeStamp, name, comment };
     guestBook.addComment(post);
     const posts = guestBook.toJson();
-    writeToFile(posts);
+    writeToFile(posts, toFile);
     response.end(posts);
     return;
   }
@@ -28,7 +28,7 @@ const showGuestBook = (request, response) => {
   response.end(content);
 };
 
-const guestBookRouter = (guestBook) => (request, response, next) => {
+const guestBookRouter = (guestBook, toFile) => (request, response, next) => {
   const { method, url: { pathname } } = request;
 
   if (!request.session && pathname === '/guestbook') {
@@ -40,6 +40,7 @@ const guestBookRouter = (guestBook) => (request, response, next) => {
 
   if (pathname === '/guestbook' && method === 'POST') {
     request.guestBook = guestBook;
+    const addCommentHandler = createAddCommentHandler(toFile);
     return addCommentHandler(request, response, next);
   }
   if (pathname === '/guestbook' && method === 'GET') {
