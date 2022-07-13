@@ -11,8 +11,8 @@ const parseUrl = (request, response, next) => {
   next();
 };
 
-const logHandler = (request, response, next) => {
-  console.log(`${request.method} ${request.url.pathname} ${request.timeStamp}`);
+const logHandler = (logger) => (request, response, next) => {
+  logger(`${request.method} ${request.url.pathname} ${request.timeStamp}`);
   next();
 };
 

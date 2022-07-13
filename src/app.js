@@ -23,7 +23,7 @@ const app = (config, sessions, users) => {
     parseSearchParams,
     injectCookies,
     injectSession(sessions),
-    logHandler,
+    logHandler(config.logger),
     loginHandler(sessions, users),
     signupHandler(users),
     apiRouter(guestBook),
