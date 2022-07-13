@@ -94,7 +94,7 @@ describe('GET /login', () => {
       .expect(200, done)
   });
 
-  it('Should give status 200 for GET /login?message=SignUp+Successful', (done) => {
+  it('Should give status 200 for GET /login with query params', (done) => {
     const sessions = {};
     request(app(config, sessions))
       .get('/login?message=SignUp+Successful')
@@ -102,5 +102,30 @@ describe('GET /login', () => {
       .expect('content-length', '838')
       .expect(/<div class="message green">SignUp Successful<\/div>/)
       .expect(200, done)
+  });
+});
+
+describe('POST /login', () => {
+  it('Should give status 401 for POST /login', (done) => {
+    const sessions = {};
+    const users = { vivek: { username: 'vivek', password: 'vivek' } };
+    request(app(config, sessions, users))
+      .post('/login')
+      .send('username=vivek&password=viv')
+      .expect('content-type', 'text/html')
+      .expect('content-length', '856')
+      .expect(/<div class="message ">Please enter valid username and password<\/div>/)
+      .expect(401, done)
+  });
+
+  it('Should give status 302 for POST /login', (done) => {
+    const sessions = {};
+    const users = { vivek: { username: 'vivek', password: 'vivek' } };
+    request(app(config, sessions, users))
+      .post('/login')
+      .send('username=vivek&password=vivek')
+      .expect('location', '/guestbook')
+      .expect('set-cookie', /id=[0-9]*/)
+      .expect(302, done)
   });
 });

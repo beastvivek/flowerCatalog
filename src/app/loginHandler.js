@@ -52,10 +52,12 @@ const isValidUser = (users, username, password) => {
   return false;
 };
 
-const validUser = (response) => {
+const notValidUser = (response) => {
   response.statusCode = 401;
   let template = loginTemplate().replace('__MESSAGE__', 'Please enter valid username and password');
   const htmlPage = template.replace('__CLASS__', '');
+  response.statusCode = 401;
+  response.setHeader('content-type', 'text/html');
   response.end(htmlPage);
 };
 
@@ -78,12 +80,12 @@ const postLoginHandler = (request, response, sessions, users) => {
   sessions[session.sessionId] = session;
 
   if (!isValidUser(users, username, password)) {
-    validUser(response);
+    notValidUser(response);
     return;
   }
 
-  response.setHeader('set-cookie', `id=${session.sessionId}`);
   response.statusCode = 302;
+  response.setHeader('set-cookie', `id=${session.sessionId}`);
   response.setHeader('location', '/guestbook');
   response.end();
 };
