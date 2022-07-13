@@ -23,7 +23,8 @@ const createAddCommentHandler = (toFile) => (request, response, next) => {
 };
 
 const showGuestBook = (request, response) => {
-  const content = generateGuestBook(request.guestBook, request.session.username);
+  const { guestBook, session: { username } } = request;
+  const content = generateGuestBook(guestBook, username);
   response.setHeader('content-type', 'text/html');
   response.end(content);
 };

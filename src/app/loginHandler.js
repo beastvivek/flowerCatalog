@@ -53,7 +53,6 @@ const isValidUser = (users, username, password) => {
 };
 
 const notValidUser = (response) => {
-  response.statusCode = 401;
   let template = loginTemplate().replace('__MESSAGE__', 'Please enter valid username and password');
   const htmlPage = template.replace('__CLASS__', '');
   response.statusCode = 401;

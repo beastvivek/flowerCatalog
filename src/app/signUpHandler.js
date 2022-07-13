@@ -32,20 +32,29 @@ const signupTemplate = () => `<html>
 
 </html>`;
 
+const postSignupHandler = (request, response, users) => {
+  const { bodyParams: { username, password } } = request;
+  users[username] = { username, password };
+  response.statusCode = 302;
+  response.setHeader('location', '/login?message=SignUp+Successful');
+  response.end();
+};
+
+const getSignupHandler = (response) => {
+  response.setHeader('content-type', 'text/html');
+  response.end(signupTemplate());
+};
+
 const signupHandler = (users) => (request, response, next) => {
-  const { method, url: { pathname }, bodyParams: { username, password } } = request;
+  const { method, url: { pathname } } = request;
 
   if (method === 'GET' && pathname === '/signup') {
-    response.setHeader('content-type', 'text/html');
-    response.end(signupTemplate());
+    getSignupHandler(response);
     return;
   }
 
   if (method === 'POST' && pathname === '/signup') {
-    users[username] = { username, password };
-    response.statusCode = 302;
-    response.setHeader('location', '/login?message=SignUp+Successful');
-    response.end();
+    postSignupHandler(request, response, users);
     return;
   }
 

@@ -1,15 +1,17 @@
 const { app } = require('../src/app');
 const request = require('supertest');
+const fs = require('fs');
 
 const config = {
   commentsFile: './test/data/comments.json',
-  logger: (x) => x
+  logger: (x) => x,
 };
 
 describe('GET /', () => {
   it('Should give status 200 for GET /', (done) => {
     const sessions = {};
-    request(app(config, sessions))
+    const users = {};
+    request(app(config, sessions, users))
       .get('/')
       .expect('content-type', 'text/html')
       .expect('content-length', '1075')
@@ -73,6 +75,14 @@ describe('GET /guestbook', () => {
 });
 
 describe('POST /guestbook', () => {
+  before(() => {
+    fs.readFileSync(config.commentsFile, 'utf-8');
+  });
+
+  after(() => {
+    fs.writeFileSync(config.commentsFile, '[]', 'utf-8');
+  });
+
   it('Should give status 200 for POST /guestbook', (done) => {
     const sessions = { '101': { username: 'john', sessionId: '101' } };
     request(app(config, sessions))
@@ -126,6 +136,31 @@ describe('POST /login', () => {
       .send('username=vivek&password=vivek')
       .expect('location', '/guestbook')
       .expect('set-cookie', /id=[0-9]*/)
+      .expect(302, done)
+  });
+});
+
+describe('GET /signup', () => {
+  it('Should give status of 200 for GET /signup', (done) => {
+    const sessions = {};
+    const users = {};
+    request(app(config, sessions, users))
+      .get('/signup')
+      .expect('content-type', 'text/html')
+      .expect('content-length', '695')
+      .expect(/<h2>Sign Up<\/h2>/)
+      .expect(200, done)
+  });
+});
+
+describe('POST /signup', () => {
+  it('Should give status of 200 for POST /signup', (done) => {
+    const sessions = {};
+    const users = {};
+    request(app(config, sessions, users))
+      .post('/signup')
+      .send('username=vivek&password=vivek')
+      .expect('location', '/login?message=SignUp+Successful')
       .expect(302, done)
   });
 });

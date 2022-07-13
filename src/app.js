@@ -14,7 +14,8 @@ const { logoutHandler } = require('./app/logoutHandler.js');
 const { signupHandler } = require('./app/signUpHandler.js');
 
 const app = (config, sessions, users) => {
-  const guestBook = JSON.parse(fs.readFileSync(config.commentsFile, 'utf8'));
+  const { commentsFile, logger } = config;
+  const guestBook = JSON.parse(fs.readFileSync(commentsFile, 'utf8'));
 
   const handlers = [
     parseUrl,
@@ -23,11 +24,11 @@ const app = (config, sessions, users) => {
     parseSearchParams,
     injectCookies,
     injectSession(sessions),
-    logHandler(config.logger),
+    logHandler(logger),
     loginHandler(sessions, users),
     signupHandler(users),
     apiRouter(guestBook),
-    guestBookRouter(guestBook, config.commentsFile),
+    guestBookRouter(guestBook, commentsFile),
     serveFileContent('./public'),
     logoutHandler(sessions),
     notFoundHandler

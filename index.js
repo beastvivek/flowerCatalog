@@ -1,9 +1,10 @@
 const { app } = require('./src/app.js');
 const { httpServer } = require('httpserver');
+const fs = require('fs');
 
 const config = {
   commentsFile: './data/comments.json',
-  logger: console.log
+  logger: console.log,
 };
 
 const sessions = {};
