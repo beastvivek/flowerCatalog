@@ -6,7 +6,7 @@ const writeToFile = (comments, toFile) => {
 };
 
 const createAddCommentHandler = (toFile) => (request, response, next) => {
-  const { url: { pathname } } = request;
+  const { uri: { pathname } } = request;
   const { comment } = request.bodyParams;
   if (pathname && comment) {
     const guestBook = new GuestBook(request.guestBook);
@@ -22,33 +22,30 @@ const createAddCommentHandler = (toFile) => (request, response, next) => {
   next();
 };
 
-const showGuestBook = (request, response) => {
+const showGuestBook = (request, response, next) => {
+  const { uri: { pathname } } = request;
+  if (!request.session && pathname === '/guestbook') {
+    response.statusCode = 302;
+    response.setHeader('location', '/login');
+    response.end();
+    next();
+    return;
+  }
   const { guestBook, session: { username } } = request;
   const content = generateGuestBook(guestBook, username);
   response.setHeader('content-type', 'text/html');
   response.end(content);
 };
 
-const guestBookRouter = (guestBook, toFile) => (request, response, next) => {
-  const { method, url: { pathname } } = request;
-
-  if (!request.session && pathname === '/guestbook') {
-    response.statusCode = 302;
-    response.setHeader('location', '/login');
-    response.end();
-    return;
-  }
-
-  if (pathname === '/guestbook' && method === 'POST') {
-    request.guestBook = guestBook;
-    const addCommentHandler = createAddCommentHandler(toFile);
-    return addCommentHandler(request, response, next);
-  }
-  if (pathname === '/guestbook' && method === 'GET') {
-    request.guestBook = guestBook;
-    return showGuestBook(request, response);
-  }
-  next();
+const getGuestBookHandler = (guestBook) => (request, response, next) => {
+  request.guestBook = guestBook;
+  return showGuestBook(request, response, next);
 };
 
-module.exports = { guestBookRouter };
+const postGuestBookHandler = (guestBook, toFile) => (request, response, next) => {
+  request.guestBook = guestBook;
+  const addCommentHandler = createAddCommentHandler(toFile, next);
+  return addCommentHandler(request, response);
+};
+
+module.exports = { getGuestBookHandler, postGuestBookHandler };

@@ -1,40 +1,47 @@
 const fs = require('fs');
-const { createRouter } = require('httpserver');
-const { notFoundHandler, logHandler, parseUrl,
+const { logHandler, parseUrl,
   timeStampHandler } = require('./app/staticHandler.js');
-const { guestBookRouter } = require('./app/guestBookRouter.js');
+const { getGuestBookHandler,
+  postGuestBookHandler } = require('./app/guestBookRouter.js');
 const { apiRouter } = require('./app/apiRouter.js');
 const { parseBodyParams } = require('./app/parseBodyParams.js');
-const { serveFileContent } = require('./app/serveFileContent.js');
 const { injectCookies } = require('./app/injectCookies.js');
 const { injectSession } = require('./app/injectSession.js');
 const { parseSearchParams } = require('./app/parseSearchParams.js');
-const { loginHandler } = require('./app/loginHandler.js');
+const { postLoginHandler, getLoginHandler } = require('./app/loginHandler.js');
 const { logoutHandler } = require('./app/logoutHandler.js');
-const { signupHandler } = require('./app/signUpHandler.js');
+const { getSignupHandler,
+  postSignupHandler } = require('./app/signUpHandler.js');
+const { serveFileContent } = require('./app/serveFileContent.js');
+const express = require('express');
 
-const app = (config, sessions, users) => {
+const createApp = (config, userSessions, users) => {
   const { commentsFile, logger } = config;
   const guestBook = JSON.parse(fs.readFileSync(commentsFile, 'utf8'));
+  const app = express();
 
-  const handlers = [
-    parseUrl,
-    timeStampHandler,
-    parseBodyParams,
-    parseSearchParams,
-    injectCookies,
-    injectSession(sessions),
-    logHandler(logger),
-    loginHandler(sessions, users),
-    signupHandler(users),
-    apiRouter(guestBook),
-    guestBookRouter(guestBook, commentsFile),
-    serveFileContent('./public'),
-    logoutHandler(sessions),
-    notFoundHandler
-  ];
+  app.use(parseUrl);
+  app.use(timeStampHandler);
+  app.use(parseBodyParams);
+  app.use(parseSearchParams);
+  app.use(injectCookies);
+  app.use(injectSession(userSessions));
+  app.use(logHandler(logger));
 
-  return createRouter(handlers);
+  app.get('/login', getLoginHandler);
+  app.get('/signup', getSignupHandler);
+  app.get('/api/guestbook', apiRouter(guestBook));
+  app.get('/guestbook', getGuestBookHandler(guestBook));
+  app.get('/logout', logoutHandler(userSessions));
+
+  app.post('/login', postLoginHandler(userSessions, users));
+  app.post('/signup', postSignupHandler(users));
+  app.post('/guestbook', postGuestBookHandler(guestBook, commentsFile));
+
+  // app.use(express.static('public'));
+  app.use(serveFileContent('./public'));
+
+  return app;
 };
 
-module.exports = { app };
+module.exports = { createApp };

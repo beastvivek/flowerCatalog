@@ -1,18 +1,12 @@
-const notFoundHandler = (request, response) => {
-  response.statusCode = 404;
-  response.status = 'Not Found';
-  response.end('Not Found');
-};
-
 const parseUrl = (request, response, next) => {
   const host = request.headers.host;
   const url = request.url;
-  request.url = new URL(`http://${host}${url}`);
+  request.uri = new URL(`http://${host}${url}`);
   next();
 };
 
 const logHandler = (logger) => (request, response, next) => {
-  logger(`${request.method} ${request.url.pathname} ${request.timeStamp}`);
+  logger(`${request.method} ${request.uri.pathname} ${request.timeStamp}`);
   next();
 };
 
@@ -24,4 +18,4 @@ const timeStampHandler = (request, response, next) => {
   next();
 };
 
-module.exports = { notFoundHandler, logHandler, timeStampHandler, parseUrl };
+module.exports = { logHandler, timeStampHandler, parseUrl };

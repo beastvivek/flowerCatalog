@@ -1,16 +1,16 @@
-const { app } = require('./src/app.js');
-const { httpServer } = require('httpserver');
-const fs = require('fs');
+const { createApp } = require('./src/app.js');
 
 const config = {
   commentsFile: './data/comments.json',
   logger: console.log,
 };
 
-const sessions = {};
+const userSessions = {};
 const users = {
   vivek: { username: 'vivek', password: 'ek' },
   gayatri: { username: 'gayatri', password: 'three' },
 };
 
-httpServer(8800, app(config, sessions, users));
+const app = createApp(config, userSessions, users);
+
+app.listen(8800);

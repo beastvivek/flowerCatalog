@@ -1,5 +1,5 @@
 const parseSearchParams = (request, response, next) => {
-  const { method, url: { searchParams } } = request;
+  const { method, uri: { searchParams } } = request;
   if (searchParams && method === 'GET') {
     const params = {};
     const entries = searchParams.entries();

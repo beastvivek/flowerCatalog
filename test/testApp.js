@@ -1,4 +1,4 @@
-const { app } = require('../src/app');
+const { createApp } = require('../src/app.js');
 const request = require('supertest');
 const fs = require('fs');
 
@@ -11,7 +11,7 @@ describe('GET /', () => {
   it('Should give status 200 for GET /', (done) => {
     const sessions = {};
     const users = {};
-    request(app(config, sessions, users))
+    request(createApp(config, sessions, users))
       .get('/')
       .expect('content-type', 'text/html')
       .expect('content-length', '1075')
@@ -23,7 +23,7 @@ describe('GET /', () => {
 describe('GET /index.html', () => {
   it('Should give status 200 for GET /index.html', (done) => {
     const sessions = {};
-    request(app(config, sessions))
+    request(createApp(config, sessions))
       .get('/index.html')
       .expect('content-type', 'text/html')
       .expect('content-length', '1075')
@@ -35,7 +35,7 @@ describe('GET /index.html', () => {
 describe('GET /abeliophyllum.html', () => {
   it('Should give status 200 for GET /abeliophyllum.html', (done) => {
     const sessions = {};
-    request(app(config, sessions))
+    request(createApp(config, sessions))
       .get('/abeliophyllum.html')
       .expect('content-type', 'text/html')
       .expect('content-length', '1419')
@@ -47,7 +47,7 @@ describe('GET /abeliophyllum.html', () => {
 describe('GET /ageratum.html', () => {
   it('Should give status 200 for GET /ageratum.html', (done) => {
     const sessions = {};
-    request(app(config, sessions))
+    request(createApp(config, sessions))
       .get('/ageratum.html')
       .expect('content-type', 'text/html')
       .expect('content-length', '1149')
@@ -57,9 +57,9 @@ describe('GET /ageratum.html', () => {
 });
 
 describe('GET /guestbook', () => {
-  const sessions = {};
   it('Should give status 302 for GET /guestbook', (done) => {
-    request(app(config, sessions))
+    const sessions = {};
+    request(createApp(config, sessions))
       .get('/guestbook')
       .expect('location', '/login')
       .expect(302, done)
@@ -67,7 +67,7 @@ describe('GET /guestbook', () => {
 
   it('Should give status 200 for GET /guestbook', (done) => {
     const sessions = { '101': { username: 'john', sessionId: '101' } };
-    request(app(config, sessions))
+    request(createApp(config, sessions, {}))
       .get('/guestbook')
       .set('Cookie', 'id=101')
       .expect(200, done)
@@ -85,7 +85,7 @@ describe('POST /guestbook', () => {
 
   it('Should give status 200 for POST /guestbook', (done) => {
     const sessions = { '101': { username: 'john', sessionId: '101' } };
-    request(app(config, sessions))
+    request(createApp(config, sessions))
       .post('/guestbook')
       .set('Cookie', 'id=101')
       .send('comment=hello')
@@ -96,9 +96,9 @@ describe('POST /guestbook', () => {
 describe('GET /login', () => {
   it('Should give status 200 for GET /login', (done) => {
     const sessions = {};
-    request(app(config, sessions))
+    request(createApp(config, sessions))
       .get('/login')
-      .expect('content-type', 'text/html')
+      .expect('content-type', 'text/html; charset=utf-8')
       .expect('content-length', '821')
       .expect(/<input type="submit" value="Login">/)
       .expect(200, done)
@@ -106,9 +106,9 @@ describe('GET /login', () => {
 
   it('Should give status 200 for GET /login with query params', (done) => {
     const sessions = {};
-    request(app(config, sessions))
+    request(createApp(config, sessions))
       .get('/login?message=SignUp+Successful')
-      .expect('content-type', 'text/html')
+      .expect('content-type', 'text/html; charset=utf-8')
       .expect('content-length', '838')
       .expect(/<div class="message green">SignUp Successful<\/div>/)
       .expect(200, done)
@@ -119,10 +119,10 @@ describe('POST /login', () => {
   it('Should give status 401 for POST /login', (done) => {
     const sessions = {};
     const users = { vivek: { username: 'vivek', password: 'vivek' } };
-    request(app(config, sessions, users))
+    request(createApp(config, sessions, users))
       .post('/login')
       .send('username=vivek&password=viv')
-      .expect('content-type', 'text/html')
+      .expect('content-type', 'text/html; charset=utf-8')
       .expect('content-length', '856')
       .expect(/<div class="message ">Please enter valid username and password<\/div>/)
       .expect(401, done)
@@ -131,7 +131,7 @@ describe('POST /login', () => {
   it('Should give status 302 for POST /login', (done) => {
     const sessions = {};
     const users = { vivek: { username: 'vivek', password: 'vivek' } };
-    request(app(config, sessions, users))
+    request(createApp(config, sessions, users))
       .post('/login')
       .send('username=vivek&password=vivek')
       .expect('location', '/guestbook')
@@ -144,9 +144,9 @@ describe('GET /signup', () => {
   it('Should give status of 200 for GET /signup', (done) => {
     const sessions = {};
     const users = {};
-    request(app(config, sessions, users))
+    request(createApp(config, sessions, users))
       .get('/signup')
-      .expect('content-type', 'text/html')
+      .expect('content-type', 'text/html; charset=utf-8')
       .expect('content-length', '695')
       .expect(/<h2>Sign Up<\/h2>/)
       .expect(200, done)
@@ -157,7 +157,7 @@ describe('POST /signup', () => {
   it('Should give status of 302 for POST /signup', (done) => {
     const sessions = {};
     const users = {};
-    request(app(config, sessions, users))
+    request(createApp(config, sessions, users))
       .post('/signup')
       .send('username=vivek&password=vivek')
       .expect('location', '/login?message=SignUp+Successful')
@@ -179,7 +179,7 @@ describe('GET /api/guestbook', () => {
   it('Should give status of 200 for GET /api/guestbook', (done) => {
     const sessions = {};
     const users = {};
-    request(app(config, sessions, users))
+    request(createApp(config, sessions, users))
       .get('/api/guestbook')
       .expect('content-type', 'text/plain')
       .expect('content-length', '36')
@@ -192,7 +192,7 @@ describe('GET /logout', () => {
   it('Should give status of 302 for GET /logout', (done) => {
     const sessions = { '101': { username: 'john', sessionId: '101' } };
     const users = {};
-    request(app(config, sessions, users))
+    request(createApp(config, sessions, users))
       .get('/logout')
       .set('Cookie', 'id=101')
       .expect('location', '/')

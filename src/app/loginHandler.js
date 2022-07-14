@@ -56,13 +56,13 @@ const notValidUser = (response) => {
   let template = loginTemplate().replace('__MESSAGE__', 'Please enter valid username and password');
   const htmlPage = template.replace('__CLASS__', '');
   response.statusCode = 401;
-  response.setHeader('content-type', 'text/html');
+  response.set('content-type', 'text/html');
   response.end(htmlPage);
 };
 
 const getLoginHandler = (request, response) => {
   const { searchParams: { message } } = request;
-  response.setHeader('content-type', 'text/html');
+  response.set('content-type', 'text/html');
   let loginMessage = '';
   if (message) {
     loginMessage = message;
@@ -72,7 +72,7 @@ const getLoginHandler = (request, response) => {
   response.end(htmlPage);
 };
 
-const postLoginHandler = (request, response, sessions, users) => {
+const postLoginHandler = (sessions, users) => (request, response, next) => {
   const { bodyParams: { username, password } } = request;
 
   const session = createSession(username, password);
@@ -80,28 +80,15 @@ const postLoginHandler = (request, response, sessions, users) => {
 
   if (!isValidUser(users, username, password)) {
     notValidUser(response);
+    next();
     return;
   }
 
   response.statusCode = 302;
-  response.setHeader('set-cookie', `id=${session.sessionId}`);
-  response.setHeader('location', '/guestbook');
+  response.set('set-cookie', `id=${session.sessionId}`);
+  response.set('location', '/guestbook');
   response.end();
 };
 
-const loginHandler = (sessions, users) => (request, response, next) => {
-  const { method, url: { pathname } } = request;
 
-  if (pathname === '/login' && method === 'POST') {
-    postLoginHandler(request, response, sessions, users);
-    return;
-  }
-
-  if (pathname === '/login' && method === 'GET') {
-    getLoginHandler(request, response);
-    return;
-  }
-  next();
-};
-
-module.exports = { loginHandler };
+module.exports = { postLoginHandler, getLoginHandler };

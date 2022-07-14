@@ -1,10 +1,14 @@
 ## TODO
 
-- [ ] Remove hardcoded paths
-- [ ] Make handlers work for particular methods
+- [ ] Send guestBook from outside
+- [ ] Remove ifs for method checking
+- [ ] Think of router entity
+- [ ] Think of app entity
 
 ## DONE
 
+- [x] Remove hardcoded paths
+- [x] Make handlers work for particular methods
 - [x] Hide gif on click for one second
 - [x] Read file asynchronously
 - [x] Make `POST` method for `add-comment`

@@ -17,9 +17,8 @@ const getExtension = (fileName) => {
 const getMimeType = (fileName) => contentType[getExtension(fileName)];
 
 const serveFileContent = path => (request, response, next) => {
-  const { method } = request;
-  let { url: { pathname } } = request;
-  if (pathname === '/' && method === 'GET') {
+  let { uri: { pathname } } = request;
+  if (pathname === '/') {
     pathname = '/index.html';
   }
 
@@ -27,7 +26,7 @@ const serveFileContent = path => (request, response, next) => {
 
   if (!fs.existsSync(fileName)) {
     next();
-    return false;
+    return;
   }
 
   fs.readFile(fileName, (error, content) => {
