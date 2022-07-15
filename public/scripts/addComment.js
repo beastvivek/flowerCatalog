@@ -46,7 +46,7 @@
       }
       return generateError(xhr);
     };
-    xhr.open('POST', '/guestbook');
+    xhr.open('POST', '/guestbook/add-comment');
     xhr.send(parsedData);
     formElement.reset();
   };
