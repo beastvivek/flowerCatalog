@@ -62,7 +62,7 @@ const notValidUser = (response) => {
 
 const getLoginHandler = (request, response) => {
   const { query: { message } } = request;
-  response.set('content-type', 'text/html');
+  response.type('text/html');
   let loginMessage = '';
   if (message) {
     loginMessage = message;
@@ -84,9 +84,9 @@ const postLoginHandler = (sessions, users) => (request, response, next) => {
     return;
   }
 
-  response.statusCode = 302;
   response.cookie('id', session.sessionId);
-  response.location('/guestbook');
+  response.redirect('/guestbook');
+  response.status(302);
   response.end();
 };
 

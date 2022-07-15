@@ -1,6 +1,5 @@
 const fs = require('fs');
-const { logHandler,
-  timeStampHandler } = require('./app/staticHandler.js');
+const { logHandler, timeStampHandler } = require('./app/staticHandler.js');
 const { getGuestBookHandler,
   postGuestBookHandler } = require('./app/guestBookRouter.js');
 const { apiRouter } = require('./app/apiRouter.js');

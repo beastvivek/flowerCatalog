@@ -35,8 +35,8 @@ const signupTemplate = () => `<html>
 const postSignupHandler = (users) => (request, response) => {
   const { body: { username, password } } = request;
   users[username] = { username, password };
+  response.redirect('/login?message=SignUp+Successful');
   response.status(302);
-  response.location('/login?message=SignUp+Successful');
   response.end();
 };
 

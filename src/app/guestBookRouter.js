@@ -25,8 +25,8 @@ const createAddCommentHandler = (toFile) => (request, response, next) => {
 const showGuestBook = (request, response, next) => {
   const { originalUrl } = request;
   if (!request.session && originalUrl === '/guestbook') {
+    response.redirect('/login');
     response.status(302);
-    response.location('/login');
     response.end();
     next();
     return;
