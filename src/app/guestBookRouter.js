@@ -6,9 +6,9 @@ const writeToFile = (comments, toFile) => {
 };
 
 const createAddCommentHandler = (toFile) => (request, response, next) => {
-  const { uri: { pathname } } = request;
+  const { originalUrl } = request;
   const { comment } = request.bodyParams;
-  if (pathname && comment) {
+  if (originalUrl && comment) {
     const guestBook = new GuestBook(request.guestBook);
     const timeStamp = request.timeStamp;
     const name = request.session.username;
@@ -23,17 +23,17 @@ const createAddCommentHandler = (toFile) => (request, response, next) => {
 };
 
 const showGuestBook = (request, response, next) => {
-  const { uri: { pathname } } = request;
-  if (!request.session && pathname === '/guestbook') {
-    response.statusCode = 302;
-    response.setHeader('location', '/login');
+  const { originalUrl } = request;
+  if (!request.session && originalUrl === '/guestbook') {
+    response.status(302);
+    response.location('/login');
     response.end();
     next();
     return;
   }
   const { guestBook, session: { username } } = request;
   const content = generateGuestBook(guestBook, username);
-  response.setHeader('content-type', 'text/html');
+  response.type('text/html');
   response.end(content);
 };
 

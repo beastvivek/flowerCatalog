@@ -55,8 +55,8 @@ const isValidUser = (users, username, password) => {
 const notValidUser = (response) => {
   let template = loginTemplate().replace('__MESSAGE__', 'Please enter valid username and password');
   const htmlPage = template.replace('__CLASS__', '');
-  response.statusCode = 401;
-  response.set('content-type', 'text/html');
+  response.status(401);
+  response.type('text/html');
   response.end(htmlPage);
 };
 
@@ -85,8 +85,8 @@ const postLoginHandler = (sessions, users) => (request, response, next) => {
   }
 
   response.statusCode = 302;
-  response.set('set-cookie', `id=${session.sessionId}`);
-  response.set('location', '/guestbook');
+  response.cookie('id', session.sessionId);
+  response.location('/guestbook');
   response.end();
 };
 

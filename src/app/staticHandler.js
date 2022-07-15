@@ -1,12 +1,5 @@
-const parseUrl = (request, response, next) => {
-  const host = request.headers.host;
-  const url = request.url;
-  request.uri = new URL(`http://${host}${url}`);
-  next();
-};
-
 const logHandler = (logger) => (request, response, next) => {
-  logger(`${request.method} ${request.uri.pathname} ${request.timeStamp}`);
+  logger(`${request.method} ${request.originalUrl} ${request.timeStamp}`);
   next();
 };
 
@@ -18,4 +11,4 @@ const timeStampHandler = (request, response, next) => {
   next();
 };
 
-module.exports = { logHandler, timeStampHandler, parseUrl };
+module.exports = { logHandler, timeStampHandler };

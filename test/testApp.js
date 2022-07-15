@@ -13,7 +13,7 @@ describe('GET /', () => {
     const users = {};
     request(createApp(config, sessions, users))
       .get('/')
-      .expect('content-type', 'text/html')
+      .expect('content-type', 'text/html; charset=UTF-8')
       .expect('content-length', '1075')
       .expect(/<h3 class="main-heading">Flower Catalog<\/h3>/)
       .expect(200, done)
@@ -25,7 +25,7 @@ describe('GET /index.html', () => {
     const sessions = {};
     request(createApp(config, sessions))
       .get('/index.html')
-      .expect('content-type', 'text/html')
+      .expect('content-type', 'text/html; charset=UTF-8')
       .expect('content-length', '1075')
       .expect(/<h3 class="main-heading">Flower Catalog<\/h3>/)
       .expect(200, done)
@@ -37,7 +37,7 @@ describe('GET /abeliophyllum.html', () => {
     const sessions = {};
     request(createApp(config, sessions))
       .get('/abeliophyllum.html')
-      .expect('content-type', 'text/html')
+      .expect('content-type', 'text/html; charset=UTF-8')
       .expect('content-length', '1419')
       .expect(/<h3> <a href="index.html">&lt;&lt;<\/a> Abeliophyllum<\/h3>/)
       .expect(200, done)
@@ -49,7 +49,7 @@ describe('GET /ageratum.html', () => {
     const sessions = {};
     request(createApp(config, sessions))
       .get('/ageratum.html')
-      .expect('content-type', 'text/html')
+      .expect('content-type', 'text/html; charset=UTF-8')
       .expect('content-length', '1149')
       .expect(/<h3> <a href="index.html">&lt;&lt;<\/a> Ageratum<\/h3>/)
       .expect(200, done)
@@ -165,7 +165,7 @@ describe('POST /signup', () => {
   });
 });
 
-describe('GET /api/guestbook', () => {
+describe('GET /guestbook/api', () => {
   const comment = { name: 'vivek', comment: 'hello' };
 
   before(() => {
@@ -176,12 +176,12 @@ describe('GET /api/guestbook', () => {
     fs.writeFileSync(config.commentsFile, '[]', 'utf-8');
   });
 
-  it('Should give status of 200 for GET /api/guestbook', (done) => {
+  it('Should give status of 200 for GET /guestbook/api', (done) => {
     const sessions = {};
     const users = {};
     request(createApp(config, sessions, users))
-      .get('/api/guestbook')
-      .expect('content-type', 'text/plain')
+      .get('/guestbook/api')
+      .expect('content-type', 'text/plain; charset=utf-8')
       .expect('content-length', '36')
       .expect('[{"name":"vivek","comment":"hello"}]')
       .expect(200, done)

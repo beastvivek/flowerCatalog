@@ -35,13 +35,13 @@ const signupTemplate = () => `<html>
 const postSignupHandler = (users) => (request, response) => {
   const { bodyParams: { username, password } } = request;
   users[username] = { username, password };
-  response.statusCode = 302;
-  response.set('location', '/login?message=SignUp+Successful');
+  response.status(302);
+  response.location('/login?message=SignUp+Successful');
   response.end();
 };
 
 const getSignupHandler = (request, response) => {
-  response.set('content-type', 'text/html');
+  response.type('text/html');
   response.end(signupTemplate());
 };
 
