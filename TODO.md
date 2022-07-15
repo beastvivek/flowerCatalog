@@ -1,12 +1,15 @@
 ## TODO
 
-- [ ] Send guestBook from outside
-- [ ] Remove ifs for method checking
-- [ ] Think of router entity
-- [ ] Think of app entity
+- [ ] Create router for login and signUp
 
 ## DONE
 
+- [x] Removed parseBodyParams and parseQueryParams
+- [x] Create router for guestbook 
+- [x] Send guestBook from outside
+- [x] Remove ifs for method checking
+- [x] ~~Think of router entity~~
+- [x] ~~Think of app entity~~
 - [x] Remove hardcoded paths
 - [x] Make handlers work for particular methods
 - [x] Hide gif on click for one second

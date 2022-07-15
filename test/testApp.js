@@ -74,7 +74,7 @@ describe('GET /guestbook', () => {
   });
 });
 
-describe('POST /guestbook', () => {
+describe('POST /guestbook/add-comment', () => {
   before(() => {
     fs.readFileSync(config.commentsFile, 'utf-8');
   });
@@ -83,10 +83,10 @@ describe('POST /guestbook', () => {
     fs.writeFileSync(config.commentsFile, '[]', 'utf-8');
   });
 
-  it('Should give status 200 for POST /guestbook', (done) => {
+  it('Should give status 200 for POST /guestbook/add-comment', (done) => {
     const sessions = { '101': { username: 'john', sessionId: '101' } };
     request(createApp(config, sessions))
-      .post('/guestbook')
+      .post('/guestbook/add-comment')
       .set('Cookie', 'id=101')
       .send('comment=hello')
       .expect(200, done)

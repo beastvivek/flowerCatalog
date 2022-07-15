@@ -61,7 +61,7 @@ const notValidUser = (response) => {
 };
 
 const getLoginHandler = (request, response) => {
-  const { searchParams: { message } } = request;
+  const { query: { message } } = request;
   response.set('content-type', 'text/html');
   let loginMessage = '';
   if (message) {
@@ -73,7 +73,7 @@ const getLoginHandler = (request, response) => {
 };
 
 const postLoginHandler = (sessions, users) => (request, response, next) => {
-  const { bodyParams: { username, password } } = request;
+  const { body: { username, password } } = request;
 
   const session = createSession(username, password);
   sessions[session.sessionId] = session;

@@ -7,7 +7,7 @@ const writeToFile = (comments, toFile) => {
 
 const createAddCommentHandler = (toFile) => (request, response, next) => {
   const { originalUrl } = request;
-  const { comment } = request.bodyParams;
+  const { comment } = request.body;
   if (originalUrl && comment) {
     const guestBook = new GuestBook(request.guestBook);
     const timeStamp = request.timeStamp;

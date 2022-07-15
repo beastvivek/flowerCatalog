@@ -33,7 +33,7 @@ const signupTemplate = () => `<html>
 </html>`;
 
 const postSignupHandler = (users) => (request, response) => {
-  const { bodyParams: { username, password } } = request;
+  const { body: { username, password } } = request;
   users[username] = { username, password };
   response.status(302);
   response.location('/login?message=SignUp+Successful');

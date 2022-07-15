@@ -4,10 +4,8 @@ const { logHandler,
 const { getGuestBookHandler,
   postGuestBookHandler } = require('./app/guestBookRouter.js');
 const { apiRouter } = require('./app/apiRouter.js');
-const { parseBodyParams } = require('./app/parseBodyParams.js');
 const { injectCookies } = require('./app/injectCookies.js');
 const { injectSession } = require('./app/injectSession.js');
-const { parseSearchParams } = require('./app/parseSearchParams.js');
 const { postLoginHandler, getLoginHandler } = require('./app/loginHandler.js');
 const { logoutHandler } = require('./app/logoutHandler.js');
 const { getSignupHandler,
@@ -19,18 +17,22 @@ const createApp = (config, userSessions, users) => {
   const guestBook = JSON.parse(fs.readFileSync(commentsFile, 'utf8'));
   const app = express();
 
+  const guestBookRouter = express.Router();
+  guestBookRouter.get('/', getGuestBookHandler(guestBook));
+  guestBookRouter.get('/api', apiRouter(guestBook));
+  guestBookRouter.post('/add-comment', postGuestBookHandler(guestBook, commentsFile));
+
   app.use(express.urlencoded({ extended: true }));
-  app.use(timeStampHandler, parseBodyParams, parseSearchParams, injectCookies, injectSession(userSessions), logHandler(logger));
+  app.use(timeStampHandler, injectCookies,
+    injectSession(userSessions), logHandler(logger));
 
   app.get('/login', getLoginHandler);
   app.get('/signup', getSignupHandler);
-  app.get('/guestbook/api', apiRouter(guestBook));
-  app.get('/guestbook', getGuestBookHandler(guestBook));
+  app.use('/guestbook', guestBookRouter);
   app.get('/logout', logoutHandler(userSessions));
 
   app.post('/login', postLoginHandler(userSessions, users));
   app.post('/signup', postSignupHandler(users));
-  app.post('/guestbook', postGuestBookHandler(guestBook, commentsFile));
 
   app.use(express.static('public'));
 
