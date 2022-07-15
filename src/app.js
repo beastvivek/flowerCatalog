@@ -21,17 +21,20 @@ const createApp = (config, userSessions, users) => {
   guestBookRouter.get('/api', apiRouter(guestBook));
   guestBookRouter.post('/add-comment', postGuestBookHandler(guestBook, commentsFile));
 
-  app.use(express.urlencoded({ extended: true }));
-  app.use(timeStampHandler, injectCookies,
-    injectSession(userSessions), logHandler(logger));
+  const loginRouter = express.Router();
+  loginRouter.get('/', getLoginHandler);
+  loginRouter.post('/', postLoginHandler(userSessions, users));
 
-  app.get('/login', getLoginHandler);
-  app.get('/signup', getSignupHandler);
+  const signupRouter = express.Router();
+  signupRouter.get('/', getSignupHandler);
+  signupRouter.post('/', postSignupHandler(users));
+
+  app.use([express.urlencoded({ extended: true }), timeStampHandler, injectCookies, injectSession(userSessions), logHandler(logger)]);
   app.use('/guestbook', guestBookRouter);
-  app.get('/logout', logoutHandler(userSessions));
+  app.use('/login', loginRouter);
+  app.use('/signup', signupRouter);
 
-  app.post('/login', postLoginHandler(userSessions, users));
-  app.post('/signup', postSignupHandler(users));
+  app.get('/logout', logoutHandler(userSessions));
 
   app.use(express.static('public'));
 

@@ -1,9 +1,10 @@
 ## TODO
 
-- [ ] Create router for login and signUp
+- [ ] Send guest book instance from outside
 
 ## DONE
 
+- [x] Create router for login and signUp
 - [x] Removed parseBodyParams and parseQueryParams
 - [x] Create router for guestbook 
 - [x] Send guestBook from outside
